@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <title>Maritime Competency Assessment</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#eef4f8;color:#10263b}
+    .top{background:#0d4162;color:#fff;padding:22px 5%;font-size:24px;font-weight:700}
+    .wrap{max-width:760px;margin:50px auto;padding:0 20px}
+    .card{background:#fff;border-radius:16px;padding:34px;box-shadow:0 8px 28px #16354d18}
+    h1{margin-top:0;font-size:30px}
+    p{line-height:1.55}
+    .notice{background:#eaf4fb;border-left:5px solid #147db3;padding:15px;margin:22px 0}
+    label{display:block;font-weight:700;margin:18px 0 8px}
+    input{width:100%;font-size:22px;letter-spacing:1px;padding:14px 15px;border:1px solid #9fb0bd;border-radius:9px;text-transform:none}
+    button{margin-top:18px;border:0;border-radius:9px;background:#0878b7;color:#fff;padding:13px 20px;font-size:17px;font-weight:700;cursor:pointer}
+    button:hover{background:#075f91}
+    .muted{color:#5c6d7b;font-size:14px}
+    .error{display:none;color:#9d1c1c;margin-top:12px;font-weight:700}
+  </style>
+</head>
+<body>
+  <div class="top">Maritime Officer Competency Assessment</div>
+  <div class="wrap">
+    <div class="card">
+      <h1>Candidate access</h1>
+      <p>Open this page on the laptop or PC where you will take the assessment.</p>
+      <div class="notice">Enter the Invitation Code exactly as shown in your assessment email. The test will not start until computer and phone verification is completed.</div>
+      <label for="code">Invitation Code</label>
+      <input id="code" name="code" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="100" placeholder="Example: ABCD-EFGH-JKLM-NPQR" autofocus>
+      <div id="err" class="error">Please enter the Invitation Code.</div>
+      <button id="continue" type="button">Continue on this computer</button>
+      <p class="muted">This public page contains no questions, answers, candidate records, passwords, or assessment results.</p>
+    </div>
+  </div>
+  <script>
+    (function(){
+      const relayBase='https://maritime-assessment-relay.alexpastuch.workers.dev';
+      const input=document.getElementById('code');
+      const err=document.getElementById('err');
+      function go(){
+        const code=(input.value||'').trim();
+        if(!code){err.style.display='block';input.focus();return;}
+        if(code.length>100){err.textContent='The Invitation Code is too long.';err.style.display='block';return;}
+        err.style.display='none';
+        window.location.assign(relayBase+'/exam/'+encodeURIComponent(code));
+      }
+      document.getElementById('continue').addEventListener('click',go);
+      input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();go();}});
+    })();
+  </script>
+</body>
+</html>
